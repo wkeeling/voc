@@ -346,6 +346,31 @@ class BytearrayTests(TranspileTestCase):
             print(b.join([b'12']))
         """)
 
+    def test_split(self):
+        self.assertCodeExecution("""
+            print(bytearray(b'').split())
+            print(bytearray(b'py bee').split())
+            print(bytearray(b'pyXbXee').split(b'X'))
+            print(bytearray(b'pyXbee').split(b'z'))
+            print(bytearray(b'pyZZbee').split(b'ZZ'))
+            print(bytearray(b'pybebyp').split(b'e', 1))
+            print(bytearray(b'aabaabaa').split(b'b', 1))
+            print(bytearray(b'aabaabaa').split(b'b', -1))
+            print(bytearray(b'one two three').split(maxsplit=1))
+            """)
+        self.assertCodeExecution("""
+            print(bytearray(b'').split('a'))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(bytearray(b'pyXbee').split('a'))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(bytearray(b'pyXbee').split(maxsplit='5'))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(bytearray(b'').split(maxsplit='5'))
+            """, exits_early=True)
+
 
 class UnaryBytearrayOperationTests(UnaryOperationTestCase, TranspileTestCase):
     data_type = 'bytearray'
