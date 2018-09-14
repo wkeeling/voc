@@ -593,7 +593,7 @@ class BytesTests(TranspileTestCase):
             print(b.splitlines(keepends=False))
             print(b.splitlines(keepends=0))
             print(b.splitlines(keepends=1))
-            print(b.splitlines(keepends=2))    
+            print(b.splitlines(keepends=2))
             """)
         # The exception message differs depending on the type of keepends.
         self.assertCodeExecution("""
