@@ -884,10 +884,17 @@ public class ByteArray extends org.python.types.Object {
     }
 
     @org.python.Method(
-            __doc__ = "B.splitlines([keepends]) -> list of lines\n\nReturn a list of the lines in B, breaking at line boundaries.\nLine breaks are not included in the resulting list unless keepends\nis given and true."
+            __doc__ = "B.splitlines([keepends]) -> list of lines\n\nReturn a list of the lines in B, breaking at line boundaries.\nLine breaks are not included in the resulting list unless keepends\nis given and true.",
+            default_args = {"keepends"}
     )
-    public org.python.Object splitlines(java.util.List<org.python.Object> args, java.util.Map<java.lang.String, org.python.Object> kwargs, java.util.List<org.python.Object> default_args, java.util.Map<java.lang.String, org.python.Object> default_kwargs) {
-        throw new org.python.exceptions.NotImplementedError("bytearray.splitlines has not been implemented.");
+    public org.python.Object splitlines(org.python.Object keepends) {
+        org.python.types.List lines = new org.python.types.List();
+
+        for (byte[] line : Bytes._splitlines(this.value, keepends)) {
+            lines.append(new ByteArray(line));
+        }
+
+        return lines;
     }
 
     @org.python.Method(
