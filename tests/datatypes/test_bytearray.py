@@ -346,6 +346,33 @@ class BytearrayTests(TranspileTestCase):
             print(b.join([b'12']))
         """)
 
+    def test_splitlines(self):
+        self.assertCodeExecution("""
+            b = bytearray(b'')
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            b = bytearray(b'One line\\n')
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            b = bytearray(b'ab c\\n\\nde fg\\rkl\\r\\n')
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            print(b.splitlines(keepends=False))
+            print(b.splitlines(keepends=0))
+            print(b.splitlines(keepends=1))
+            print(b.splitlines(keepends=2))
+            """)
+        # The exception message differs depending on the type of keepends.
+        self.assertCodeExecution("""
+            print(bytearray(b'helloworld\\n').splitlines(keepends='a'))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(bytearray(b'helloworld\\n').splitlines(keepends=0.1))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(bytearray(b'helloworld\\n').splitlines(keepends=object))
+            """, exits_early=True)
+
 
 class UnaryBytearrayOperationTests(UnaryOperationTestCase, TranspileTestCase):
     data_type = 'bytearray'
