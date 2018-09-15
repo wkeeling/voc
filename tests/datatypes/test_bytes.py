@@ -579,6 +579,33 @@ class BytesTests(TranspileTestCase):
             print(b''.split(maxsplit='5'))
             """, exits_early=True)
 
+    def test_splitlines(self):
+        self.assertCodeExecution("""
+            b = b''
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            b = b'One line\\n'
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            b = b'ab c\\n\\nde fg\\rkl\\r\\n'
+            print(b.splitlines())
+            print(b.splitlines(keepends=True))
+            print(b.splitlines(keepends=False))
+            print(b.splitlines(keepends=0))
+            print(b.splitlines(keepends=1))
+            print(b.splitlines(keepends=2))
+            """)
+        # The exception message differs depending on the type of keepends.
+        self.assertCodeExecution("""
+            print(b'helloworld\\n'.splitlines(keepends='a'))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(b'helloworld\\n'.splitlines(keepends=0.1))
+            """, exits_early=True)
+        self.assertCodeExecution("""
+            print(b'helloworld\\n'.splitlines(keepends=object))
+            """, exits_early=True)
+
     def test_join(self):
         self.assertCodeExecution("""
             b = bytes(b'.')
